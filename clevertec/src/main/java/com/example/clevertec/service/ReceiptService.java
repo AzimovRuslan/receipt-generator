@@ -1,6 +1,6 @@
 package com.example.clevertec.service;
 
-import com.example.clevertec.controller.DiscountCardController;
+import com.example.clevertec.aspect.constant.Constants;
 import com.example.clevertec.mapper.DiscountCardMapper;
 import com.example.clevertec.mapper.ReceiptMapper;
 import com.example.clevertec.model.dto.DiscountCardDTO;
@@ -8,9 +8,9 @@ import com.example.clevertec.model.dto.ReceiptDTO;
 import com.example.clevertec.model.entity.DiscountCard;
 import com.example.clevertec.model.entity.Receipt;
 import com.example.clevertec.repository.ReceiptRepository;
+import com.example.clevertec.service.utility.RecordRecipient;
 import lombok.AllArgsConstructor;
 
-import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -33,11 +33,12 @@ public class ReceiptService implements Service<ReceiptDTO>{
 
     @Override
     public ReceiptDTO findById(Long id) {
-        return receiptMapper.toDto(receiptRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Receipt with id " + id + "not found")));
+        return receiptMapper.toDto(RecordRecipient.getRecordFromTable(id, receiptRepository, Constants.RECEIPT_NOT_FOUND));
     }
 
     @Override
     public ReceiptDTO create(ReceiptDTO receiptDTO) {
+
         Receipt receipt = receiptMapper.toEntity(receiptDTO);
         BigDecimal totalCoast = receipt.getTotalCoast();
 
@@ -46,28 +47,18 @@ public class ReceiptService implements Service<ReceiptDTO>{
         for (Map.Entry<Long, Integer> entry : purchases.entrySet()) {
             BigDecimal price = productService.findById(entry.getKey()).getPrice().multiply(BigDecimal.valueOf(entry.getValue()));
 
-            if (entry.getValue() <= 5) {
+            if (entry.getValue() <= Constants.REQUIRED_NUMBER_PRODUCTS_FOR_DISCOUNT) {
                 totalCoast = totalCoast.add(price);
             } else {
-                BigDecimal priceWithDiscount = price.multiply(BigDecimal.valueOf(0.90));
+                BigDecimal priceWithDiscount = price.multiply(Constants.DISCOUNT_MULTIPLIER);
                 totalCoast = totalCoast.add(priceWithDiscount);
             }
         }
 
-//        purchases.forEach((key, value) -> {
-//            BigDecimal price = productService.findById(key).getPrice().multiply(BigDecimal.valueOf(value).setScale(2));;
-//            if (value <= 5) {
-//                totalCoast.add(price);
-//            } else {
-//                BigDecimal priceWithDiscount = price.multiply(BigDecimal.valueOf(0.90));
-//                totalCoast.add(priceWithDiscount);
-//            }
-//        });
-
         DiscountCard discountCard = null;
 
         if (receipt.getDiscountCard() != null) {
-            totalCoast = totalCoast.multiply(BigDecimal.valueOf(1.00).subtract(BigDecimal.valueOf(receipt.getDiscountCard().getDiscountPercent()).setScale(2).divide(BigDecimal.valueOf(100.00))));
+            totalCoast = totalCoast.multiply(BigDecimal.valueOf(1.00).subtract(BigDecimal.valueOf(receipt.getDiscountCard().getDiscountPercent()).setScale(Constants.SCALE_FOR_PRICE).divide(BigDecimal.valueOf(100.00))));
 
             for (DiscountCardDTO discountCardDto : discountCardService.findAll()) {
                 DiscountCard discountCard1 = discountCardMapper.toEntity(discountCardDto);
@@ -78,7 +69,7 @@ public class ReceiptService implements Service<ReceiptDTO>{
         }
 
         receipt.setDiscountCard(discountCard);
-        receipt.setTotalCoast(totalCoast.setScale(2, BigDecimal.ROUND_CEILING));
+        receipt.setTotalCoast(totalCoast.setScale(Constants.SCALE_FOR_PRICE, BigDecimal.ROUND_CEILING));
 
         receipt = receiptRepository.save(receipt);
 
@@ -92,7 +83,7 @@ public class ReceiptService implements Service<ReceiptDTO>{
 
     @Override
     public ReceiptDTO update(Long id, ReceiptDTO receiptDtoDetails) {
-        Receipt receipt = receiptRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Receipt with id " + id + "not found"));
+        Receipt receipt = RecordRecipient.getRecordFromTable(id, receiptRepository, Constants.RECEIPT_NOT_FOUND);
         Receipt receiptDetails = receiptMapper.toEntity(receiptDtoDetails);
 
         receipt.setPurchases(receiptDetails.getPurchases());

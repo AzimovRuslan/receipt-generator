@@ -1,12 +1,14 @@
 package com.example.clevertec.service;
 
+import com.example.clevertec.aspect.constant.Constants;
+import com.example.clevertec.aspect.exception.SuchRecordAlreadyExistsException;
 import com.example.clevertec.mapper.ProductMapper;
 import com.example.clevertec.model.dto.ProductDTO;
 import com.example.clevertec.model.entity.Product;
 import com.example.clevertec.repository.ProductRepository;
+import com.example.clevertec.service.utility.RecordRecipient;
 import lombok.AllArgsConstructor;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,13 +26,26 @@ public class ProductService implements Service<ProductDTO> {
 
     @Override
     public ProductDTO findById(Long id) {
-        return productMapper.toDto(productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product with id " + id + "not found")));
+        return productMapper.toDto(RecordRecipient.getRecordFromTable(id, productRepository, Constants.PRODUCT_NOT_FOUND));
     }
 
     @Override
     public ProductDTO create(ProductDTO productDTO) {
-        Product product = productMapper.toEntity(productDTO);
-        product = productRepository.save(product);
+
+        final Product product = productMapper.toEntity(productDTO);
+
+        Product productForCreate = productRepository.findAll()
+                .stream()
+                .filter(p -> p.getName().equals(product.getName()))
+                .findFirst()
+                .orElse(null);
+
+        if (productForCreate == null) {
+            productRepository.save(product);
+        } else {
+            throw new SuchRecordAlreadyExistsException(Constants.RECORD_ALREADY_EXISTS + this.getClass().getName());
+        }
+
         return productMapper.toDto(product);
     }
 
@@ -41,7 +56,7 @@ public class ProductService implements Service<ProductDTO> {
 
     @Override
     public ProductDTO update(Long id, ProductDTO productDtoDetails) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Product with id " + id + "not found"));
+        Product product = RecordRecipient.getRecordFromTable(id, productRepository, Constants.PRODUCT_NOT_FOUND);
         Product productDetails = productMapper.toEntity(productDtoDetails);
 
         product.setName(productDetails.getName());

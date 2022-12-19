@@ -9,7 +9,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/discounts")
+@RequestMapping("/api/discount_cards")
 @CrossOrigin(origins = "*", maxAge = 3600)
 @AllArgsConstructor
 public class DiscountCardController {
