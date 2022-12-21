@@ -9,6 +9,7 @@ import com.example.clevertec.repository.DiscountCardRepository;
 import com.example.clevertec.service.utility.RecordRecipient;
 import lombok.AllArgsConstructor;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
