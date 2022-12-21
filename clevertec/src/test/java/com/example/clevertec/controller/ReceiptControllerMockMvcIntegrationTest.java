@@ -3,7 +3,6 @@ package com.example.clevertec.controller;
 import com.example.clevertec.mapper.DiscountCardMapper;
 import com.example.clevertec.mapper.ProductMapper;
 import com.example.clevertec.mapper.ReceiptMapper;
-import com.example.clevertec.model.dto.DiscountCardDTO;
 import com.example.clevertec.model.dto.ReceiptDTO;
 import com.example.clevertec.model.entity.DiscountCard;
 import com.example.clevertec.model.entity.Product;
@@ -14,7 +13,6 @@ import com.example.clevertec.repository.ReceiptRepository;
 import com.example.clevertec.service.DiscountCardService;
 import com.example.clevertec.service.ProductService;
 import com.example.clevertec.service.ReceiptService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,6 +78,7 @@ public class ReceiptControllerMockMvcIntegrationTest {
 
     @AfterEach
     void resetDB() {
+
         receiptRepository.deleteAll();
         productRepository.deleteAll();
         discountCardRepository.deleteAll();
@@ -163,6 +162,7 @@ public class ReceiptControllerMockMvcIntegrationTest {
 
     @Test
     public void givenReceipt_whenGetReceipt_thenStatus200() throws Exception {
+
         createTestReceipt(purchases1, discountCard1, BigDecimal.valueOf(0.00));
         createTestReceipt(purchases2, discountCard2, BigDecimal.valueOf(0.00));
 

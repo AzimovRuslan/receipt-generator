@@ -9,12 +9,16 @@ import org.springframework.stereotype.Component;
 public class DiscountCardMapper {
 
     public DiscountCardDTO toDto(DiscountCard discountCard) {
+
         ModelMapper mapper = new ModelMapper();
+
         return mapper.map(discountCard, DiscountCardDTO.class);
     }
 
     public DiscountCard toEntity(DiscountCardDTO discountCardDTO) {
+
         ModelMapper mapper = new ModelMapper();
+
         return mapper.map(discountCardDTO, DiscountCard.class);
     }
 }

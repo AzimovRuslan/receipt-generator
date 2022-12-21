@@ -28,11 +28,13 @@ public class ReceiptService implements Service<ReceiptDTO>{
 
     @Override
     public List<ReceiptDTO> findAll() {
+
         return receiptRepository.findAll().stream().map(receiptMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public ReceiptDTO findById(Long id) {
+
         return receiptMapper.toDto(RecordRecipient.getRecordFromTable(id, receiptRepository, Constants.RECEIPT_NOT_FOUND));
     }
 
@@ -78,11 +80,13 @@ public class ReceiptService implements Service<ReceiptDTO>{
 
     @Override
     public void deleteById(Long id) {
+
         receiptRepository.deleteById(id);
     }
 
     @Override
     public ReceiptDTO update(Long id, ReceiptDTO receiptDtoDetails) {
+
         Receipt receipt = RecordRecipient.getRecordFromTable(id, receiptRepository, Constants.RECEIPT_NOT_FOUND);
         Receipt receiptDetails = receiptMapper.toEntity(receiptDtoDetails);
 

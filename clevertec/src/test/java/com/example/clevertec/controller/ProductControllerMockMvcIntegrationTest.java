@@ -54,6 +54,7 @@ public class ProductControllerMockMvcIntegrationTest {
 
     @AfterEach
     void resetDB() {
+
         productRepository.deleteAll();
     }
 
@@ -112,6 +113,7 @@ public class ProductControllerMockMvcIntegrationTest {
 
     @Test
     public void givenProducts_whenGetProducts_thenStatus200() throws Exception {
+
         createTestProduct("Small snickers", BigDecimal.valueOf(1.30));
         createTestProduct("Chocolate", BigDecimal.valueOf(2.20));
 

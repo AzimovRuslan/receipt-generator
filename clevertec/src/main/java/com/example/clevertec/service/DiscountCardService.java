@@ -22,11 +22,13 @@ public class DiscountCardService implements Service<DiscountCardDTO>{
 
     @Override
     public List<DiscountCardDTO> findAll() {
+
         return discountCardRepository.findAll().stream().map(discountCardMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
     public DiscountCardDTO findById(Long id) {
+
         return discountCardMapper.toDto(RecordRecipient.getRecordFromTable(id, discountCardRepository, Constants.DISCOUNT_CARD_NOT_FOUND));
     }
 
@@ -52,11 +54,13 @@ public class DiscountCardService implements Service<DiscountCardDTO>{
 
     @Override
     public void deleteById(Long id) {
+
         discountCardRepository.deleteById(id);
     }
 
     @Override
     public DiscountCardDTO update(Long id, DiscountCardDTO discountCardDtoDetails) {
+
         DiscountCard discountCard = RecordRecipient.getRecordFromTable(id, discountCardRepository, Constants.DISCOUNT_CARD_NOT_FOUND);
         DiscountCard discountCardDetails = discountCardMapper.toEntity(discountCardDtoDetails);
 

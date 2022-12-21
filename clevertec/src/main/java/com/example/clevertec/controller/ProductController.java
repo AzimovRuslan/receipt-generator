@@ -18,26 +18,31 @@ public class ProductController {
 
     @GetMapping("/")
     public List<ProductDTO> getAll() {
+
         return productService.findAll();
     }
 
     @GetMapping("/{id}")
     public ProductDTO get(@PathVariable("id") Long id) {
+
         return productService.findById(id);
     }
 
     @PostMapping
     public ProductDTO create(@Valid @RequestBody ProductDTO productDTO) {
+
         return productService.create(productDTO);
     }
 
     @PutMapping("/{id}")
     public ProductDTO update(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO productDTO) {
+
         return productService.update(id, productDTO);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
+
         productService.deleteById(id);
     }
 }

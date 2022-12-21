@@ -7,9 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ClevertecApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ClevertecApplication.class, args);
 
-		System.out.println("Hello World!");
+		SpringApplication.run(ClevertecApplication.class, args);
 	}
 
 }

@@ -11,12 +11,16 @@ import org.springframework.stereotype.Component;
 public class ReceiptMapper {
 
     public ReceiptDTO toDto(Receipt receipt) {
+
         ModelMapper mapper = new ModelMapper();
+
         return mapper.map(receipt, ReceiptDTO.class);
     }
 
     public Receipt toEntity(ReceiptDTO receiptDTO) {
+
         ModelMapper mapper = new ModelMapper();
+
         return mapper.map(receiptDTO, Receipt.class);
     }
 }

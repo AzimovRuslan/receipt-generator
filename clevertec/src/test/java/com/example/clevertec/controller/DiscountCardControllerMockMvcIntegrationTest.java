@@ -52,6 +52,7 @@ public class DiscountCardControllerMockMvcIntegrationTest {
 
     @AfterEach
     void resetDB() {
+
         discountCardRepository.deleteAll();
     }
 
@@ -110,6 +111,7 @@ public class DiscountCardControllerMockMvcIntegrationTest {
 
     @Test
     public void givenDiscountCard_whenGetDiscountCard_thenStatus200() throws Exception {
+
         createTestDiscountCard(1234, 10);
         createTestDiscountCard(4321, 13);
 
