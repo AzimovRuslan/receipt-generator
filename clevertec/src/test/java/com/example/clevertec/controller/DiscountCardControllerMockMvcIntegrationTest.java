@@ -1,16 +1,12 @@
 package com.example.clevertec.controller;
 
 import com.example.clevertec.mapper.DiscountCardMapper;
-import com.example.clevertec.mapper.ProductMapper;
 import com.example.clevertec.model.dto.DiscountCardDTO;
-import com.example.clevertec.model.dto.ProductDTO;
 import com.example.clevertec.model.entity.DiscountCard;
-import com.example.clevertec.model.entity.Product;
 import com.example.clevertec.repository.DiscountCardRepository;
-import com.example.clevertec.repository.ProductRepository;
 import com.example.clevertec.service.DiscountCardService;
-import com.example.clevertec.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,10 +18,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.math.BigDecimal;
-
 @SpringBootTest
 @AutoConfigureMockMvc
+@NoArgsConstructor
 public class DiscountCardControllerMockMvcIntegrationTest {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -123,7 +118,7 @@ public class DiscountCardControllerMockMvcIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    private DiscountCardDTO createTestDiscountCard(int number, int discountPercent) {
+    public DiscountCardDTO createTestDiscountCard(int number, int discountPercent) {
 
         DiscountCard testDiscountCard = new DiscountCard();
         testDiscountCard.setNumber(number);

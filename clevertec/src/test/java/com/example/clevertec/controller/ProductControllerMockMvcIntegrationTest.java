@@ -6,6 +6,7 @@ import com.example.clevertec.model.entity.Product;
 import com.example.clevertec.repository.ProductRepository;
 import com.example.clevertec.service.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NoArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@NoArgsConstructor
 public class ProductControllerMockMvcIntegrationTest {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -118,7 +120,7 @@ public class ProductControllerMockMvcIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    private ProductDTO createTestProduct(String name, BigDecimal price) {
+    public ProductDTO createTestProduct(String name, BigDecimal price) {
 
         Product testProduct = new Product();
         testProduct.setName(name);
