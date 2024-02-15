@@ -1,4 +1,4 @@
-# ClevertecTestTask
+# receipt-generator
 
 ИСПОЛЬЗУЕМЫЙ СТЕК ТЕХНОЛОГИЙ 
 ----------------------------
